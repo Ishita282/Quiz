@@ -1,0 +1,45 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # step1- check out the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      #step2- set up node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      #step3- Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # step4- run test
+      - name: Run tests
+        run: npm test
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      #step1- checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      #step2- deploy to render or vercel (add deploy command here)
+      - name: Deploy
+        run: |
+          echo "Deploying to production..."
+          # Add deployment script/command here
